@@ -1,0 +1,32 @@
+[
+  {
+    "MarketName": "Nasdaq (NQ)",
+    "Ticker": "NQ=F",
+    "RoundTo": "Quarter",
+    "tableName": "nq"
+  },
+  {
+    "MarketName": "SP500 (ES)",
+    "Ticker": "ES=F",
+    "RoundTo": "Quarter",
+    "tableName": "sp"
+  },
+  {
+    "MarketName": "CrudeOil (CL)",
+    "Ticker": "CL=F",
+    "RoundTo": "TwoPlaces",
+    "tableName": "cl"
+  },
+  {
+    "MarketName": "DowJones (YM)",
+    "Ticker": "YM=F",
+    "RoundTo": "Zero",
+    "tableName": "ym"
+  },
+  {
+    "MarketName": "Euro Fx (6E)",
+    "Ticker": "6E=F",
+    "RoundTo": "FourPlaces",
+    "tableName": "euro6"
+  }
+]
