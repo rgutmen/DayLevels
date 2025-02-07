@@ -4,23 +4,34 @@ from datetime import datetime, timedelta
 
 dateTodayDate = datetime.now()
 
-"""
-Convert date object to string
-"""
 def date2Str(dateObject):
+    """Convert date object to string
+
+    Args:
+        dateObject (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """    
     return dateObject.strftime('%Y-%m-%d')
 
-
-"""
-Calculate today and yesterday date into string format
-"""
 def calculateDatesTomorrow(daysBack):
+    """Calculate today and yesterday date into string format
+
+    Args:
+        daysBack (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """    """"""
     dateTodayStr = date2Str(dateTodayDate + timedelta(days=1)) 
     timeDiffStr = date2Str(dateTodayDate + timedelta(days=-daysBack))
     return dateTodayStr, timeDiffStr
 
-"""
-Format the date with the following format: YYYYMMDD
-"""
 def getTodayDBFormat():
+    """Format the date with the following format: YYYYMMDD
+
+    Returns:
+        _type_: _description_
+    """
     return datetime.now().strftime("%Y%m%d")

@@ -12,10 +12,15 @@ This file is executed using crontab at the end of the sesion, to find out which 
 """
 
 
-"""
-It fills the array with the values and levels calculated at the opening for each market in the json file.
-"""
 def fillArray(dataMarkets):
+    """It fills the array with the values and levels calculated at the opening for each market in the json file.
+
+    Args:
+        dataMarkets (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """    
     lista = []
     todayDB = getTodayDBFormat()
     connection_obj = sqlite3.connect('db.sqlite3')
@@ -40,10 +45,12 @@ def fillArray(dataMarkets):
     connection_obj.close()
     return lista
 
-"""
-Verify which levels were crossed and store the information in the database.
-"""
 def checker(markets):
+    """Verify which levels were crossed and store the information in the database.
+
+    Args:
+        markets (_type_): _description_
+    """    
     for market in markets:
         dateTodayStr, timeDiffStr = calculateDatesTomorrow(1)
         df = yf.download(market.getTicker(), start=timeDiffStr, end=dateTodayStr, interval='1m')
@@ -76,10 +83,9 @@ def checker(markets):
         connection_obj.commit()
         connection_obj.close()
 
-"""
-Load the json file into an array
-"""
 def initialization():
+    """Load the json file into an array
+    """
     global markets
     with open('markets.json') as f:
         dataMarkets = json.load(f)

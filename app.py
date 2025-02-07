@@ -10,12 +10,19 @@ app = Flask(__name__)
 def ping():
     return jsonify({"answer":"pong!"})
 
-"""
-Send the information from the DB according the dates and markets specified
-"""
 #http://127.0.0.1:5002/levels/cl/20220712/20220718
 @app.route('/levels/<string:market>/<string:date_start>/<string:date_end>', methods=['GET'])
 def getLevelsPerDate(market, date_start, date_end):
+    """Send the information from the DB according the dates and markets specified
+
+    Args:
+        market (_type_): _description_
+        date_start (_type_): _description_
+        date_end (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """    """"""
     connection_obj = sqlite3.connect('db.sqlite3')
     cursor_obj = connection_obj.cursor()
     rowList = cursor_obj.execute('''SELECT * FROM '''+ market +''' WHERE Date BETWEEN '''+ date_start +''' AND ''' + date_end + ''';''').fetchall()
@@ -26,12 +33,17 @@ def getLevelsPerDate(market, date_start, date_end):
     return jsonify(listita)
 
 
-"""
-Send the information from the last register added in the DB, at opening time, RTH
-"""
 #http://127.0.0.1:5002/levels/cl/
 @app.route('/levels/<string:market>', methods=['GET'])
 def getLevels(market):
+    """Send the information from the last register added in the DB, at opening time, RTH
+
+    Args:
+        market (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     todayDB = getTodayDBFormat()
     connection_obj = sqlite3.connect('db.sqlite3')
     cursor_obj = connection_obj.cursor()

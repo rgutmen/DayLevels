@@ -69,7 +69,7 @@ class Market:
 
     def getStdN3(self):
         return self.stdN3
-  
+
     def getStdvMaxP(self):
         return self.stdvMaxP
 
@@ -121,7 +121,7 @@ class Market:
 
     def to_dict(self):
         return {
-           'Date': self.getDate(),
+            'Date': self.getDate(),
             'stdP3': self.getStdP3(), 
             'stdP2': self.getStdP2(), 
             'stdP1': self.getStdP1(),

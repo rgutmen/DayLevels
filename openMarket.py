@@ -13,33 +13,46 @@ This file is executed using crontab at the time the CME is opening.
 """
 DAYS_BACK = 14
 
-""" 
-Round to 0.25, 0.5, 0.75
-"""
 def roundToQuarter(x):
+    """Round to 0.25, 0.5, 0.75
+
+    Args:
+        x (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     if x != np.nan:
         return math.ceil(x*4)/4
     else:
         return 0
 
-"""
-Calculate 14 days back from the current date.
-"""
 def calculateDatesDaysBack():
+    """Calculate 14 days back from the current date.
+
+    Returns:
+        _type_: _description_
+    """
     daysBack = DAYS_BACK
     currentDay = datetime.now()
     while daysBack > 0:
-      currentDay = currentDay - timedelta(1)
-      if currentDay.weekday() >= 0 and currentDay.weekday() <= 4:
-        daysBack -= 1
+        currentDay = currentDay - timedelta(1)
+        if currentDay.weekday() >= 0 and currentDay.weekday() <= 4:
+            daysBack -= 1
     dateTodayStr = date2Str(dateTodayDate)
     timeDiffStr = date2Str(currentDay)
     return dateTodayStr, timeDiffStr
 
-"""
-Round the prices, according the market
-"""
 def roundTo(roundType, valueToRound):
+    """Round the prices, according the market
+
+    Args:
+        roundType (_type_): _description_
+        valueToRound (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     if roundType == "Zero":
         result = round(valueToRound, 0)
     elif roundType == "TwoPlaces":
@@ -50,10 +63,15 @@ def roundTo(roundType, valueToRound):
         result = roundToQuarter(valueToRound)
     return result
 
-"""
-Fill the array with markets objects from the parameters in the json file
-"""
 def fillArray(markets):
+    """Fill the array with markets objects from the parameters in the json file
+
+    Args:
+        markets (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     lista = []
     for market in markets:
         mark = Market()
@@ -63,10 +81,15 @@ def fillArray(markets):
         lista.append(mark)
     return lista
 
-"""
-Get the deviation from the range ETH (High-Low)
-"""
 def getDeviationAndOpening(ticker):
+    """Get the deviation from the range ETH (High-Low)
+
+    Args:
+        ticker (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     data1d = pd.DataFrame()
     dateTodayStr, timeDiffStr = calculateDatesDaysBack()
     data1d = yf.download(ticker, start=timeDiffStr, end=dateTodayStr, interval='1m')
@@ -84,10 +107,12 @@ def getDeviationAndOpening(ticker):
 
     return data1d.stdDiv2[-1], opening
 
-"""
-Get the opening price of the market, and then the deviations are calculated on top and below the price opening
-"""
 def openingReport(markets):
+    """Get the opening price of the market, and then the deviations are calculated on top and below the price opening
+
+    Args:
+        markets (_type_): _description_
+    """
     listaMsg = []
     for market in markets:
         deviation, openToday = getDeviationAndOpening(market.getTicker())
@@ -98,7 +123,7 @@ def openingReport(markets):
             market.setStdP3(roundTo(market.getRoundTo(), openToday + (+3 * deviation)))
             market.setStdP2(roundTo(market.getRoundTo(), openToday + (+2 * deviation)))
             market.setStdP1(roundTo(market.getRoundTo(), openToday + (+1 * deviation)))
-          
+
             market.setOpen(roundTo(market.getRoundTo(), openToday))
 
             market.setStdN1(roundTo(market.getRoundTo(), openToday + (-1 * deviation)))
@@ -118,7 +143,7 @@ def openingReport(markets):
             (todayDB, market.getStdP3(), market.getStdP2(), market.getStdP1(), market.getOpen(), market.getStdN1(), market.getStdN2(), market.getStdN3()))
             connection_obj.commit()
             
-          
+
             listaMsg.append(msg)
         
             
@@ -129,10 +154,9 @@ def openingReport(markets):
 
     connection_obj.close()
 
-"""
-Load the json file into an array
-"""
 def initialization():
+    """Load the json file into an array
+    """
     global markets
     with open('markets.json') as f:
         data = json.load(f)
